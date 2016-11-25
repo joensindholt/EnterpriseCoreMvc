@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace EnterpriseCoreMvc.Web
 {
@@ -30,7 +31,7 @@ namespace EnterpriseCoreMvc.Web
             // Add framework services.
             services.AddMvc();
 
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(@"Server=localhost;Database=MvcAzureAppSqlWeb;Trusted_Connection=True;"));
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Database")));
 
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductRepository, ProductRepository>();
@@ -60,6 +61,25 @@ namespace EnterpriseCoreMvc.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            Seed(app);
+        }
+
+        public void Seed(IApplicationBuilder app)
+        {
+            // Get an instance of the DbContext from the DI container
+            using (var context = app.ApplicationServices.GetRequiredService<DatabaseContext>())
+            {
+                if (!context.Database.EnsureCreated())
+                    context.Database.Migrate();
+
+                if (context.Products.Count() == 0)
+                {
+                    context.Products.Add(new Product("Camera"));
+                    context.Products.Add(new Product("Bicycle"));
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }
