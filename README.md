@@ -3,7 +3,7 @@ Boilerplate for an enterprise application setup using ASP.NET Core and Entity Fr
 
 ## Dependencies
 
-Visual Studio 2015
-A Sql Server Database
-.NET Core SDK 1.1.0
-...
+- Visual Studio 2015
+- A Sql Server Database
+- .NET Core SDK 1.1.0
+- ...
