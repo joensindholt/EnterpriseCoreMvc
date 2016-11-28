@@ -62,17 +62,19 @@ namespace EnterpriseCoreMvc.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            Seed(app);
+            MigrateAndSeed(app);
         }
 
-        public void Seed(IApplicationBuilder app)
+        public void MigrateAndSeed(IApplicationBuilder app)
         {
             // Get an instance of the DbContext from the DI container
             using (var context = app.ApplicationServices.GetRequiredService<DatabaseContext>())
             {
+                // Migrate
                 if (!context.Database.EnsureCreated())
                     context.Database.Migrate();
 
+                // Seed
                 if (context.Products.Count() == 0)
                 {
                     context.Products.Add(new Product("Camera"));
