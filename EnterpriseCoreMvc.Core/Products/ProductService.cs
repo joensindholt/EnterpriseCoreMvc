@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EnterpriseCoreMvc.Core.Products
 {
@@ -12,29 +12,9 @@ namespace EnterpriseCoreMvc.Core.Products
             _productRepository = productRepository;
         }
 
-        public void Delete(int productId)
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            _productRepository.Delete(productId);
-        }
-
-        public Product Get(int productId)
-        {
-            return _productRepository.Get(productId);
-        }
-
-        public IEnumerable<Product> GetAll()
-        {
-            return _productRepository.GetAll();
-        }
-
-        public void Save(Product product)
-        {
-            _productRepository.Save(product);
-        }
-
-        public void Update(Product product)
-        {
-            _productRepository.Update(product);
+            return await _productRepository.GetAllAsync();
         }
     }
 }

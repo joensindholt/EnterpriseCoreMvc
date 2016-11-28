@@ -1,5 +1,6 @@
 ﻿using EnterpriseCoreMvc.Core.Products;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace EnterpriseCoreMvc.Web.Controllers
 {
@@ -13,9 +14,9 @@ namespace EnterpriseCoreMvc.Web.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var products = _productsService.GetAll();
+            var products = await _productsService.GetAllAsync();
             return View(products);
         }
     }

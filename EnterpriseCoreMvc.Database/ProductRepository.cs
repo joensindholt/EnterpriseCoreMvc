@@ -1,6 +1,7 @@
 ﻿using EnterpriseCoreMvc.Core.Products;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace EnterpriseCoreMvc.Database
 {
@@ -13,35 +14,10 @@ namespace EnterpriseCoreMvc.Database
             _db = db;
         }
 
-        public Product Get(int productId)
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            var product = _db.Products.First(p => p.Id == productId);
-            return product;
-        }
-
-        public IEnumerable<Product> GetAll()
-        {
-            var products = _db.Products;
+            var products = await _db.Products.ToListAsync();
             return products;
-        }
-
-        public void Save(Product product)
-        {
-            _db.Products.Add(product);
-            _db.SaveChanges();
-        }
-
-        public void Update(Product product)
-        {
-            _db.Products.Update(product);
-            _db.SaveChanges();
-        }
-
-        public void Delete(int productId)
-        {
-            var product = _db.Products.First(p => p.Id == productId);
-            _db.Remove(product);
-            _db.SaveChanges();
         }
     }
 }
